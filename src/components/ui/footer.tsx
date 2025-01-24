@@ -6,7 +6,7 @@ type Props = {};
 
 const Footer: React.FC<Props> = () => {
   return (
-    <footer className="bg-white dark:bg-gray-900">
+    <footer className="bg-white dark:bg-gray-900 bottom-0 left-0 z-100 mt-10">
       <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
         <div className="md:flex md:justify-between">
           <div className="mb-6 md:mb-0 grid cols-2 sm:flex sm:flex-flow">
