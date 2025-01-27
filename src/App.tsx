@@ -1,12 +1,11 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import { LoginForm } from "./pages/Login";
 import { Register } from "./pages/Signup";
 import { Footer, Header } from "./components/ui";
-import { AboutUs } from "./pages";
-import AOS from 'aos';
+import { AboutUs, ContactUs } from "./pages";
 import "./App.css";
 
 type Props = {};
@@ -14,10 +13,6 @@ type Props = {};
 
 const App: React.FC<Props> = () => {
   
-useEffect(() =>{
-  AOS.init();
-}, []);
-
   return (
         <Router>
           <Header />
@@ -28,6 +23,7 @@ useEffect(() =>{
             <Route path="/register" element={<Register />} />
             <Route path="*" element={<NotFound />} />
             <Route path="/about" element={<AboutUs />} />
+            <Route path="/contact" element={<ContactUs />} />
           </Routes>
           </main>
           <Footer />
