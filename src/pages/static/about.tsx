@@ -1,15 +1,16 @@
 import React from "react";
+import doctor2  from "../../assets/doctor-2.jpg";
 
 type Props = {};
 
 const AboutUs: React.FC<Props> = () => {
   return (
-    <section className="h-full w-full bg-white flex flex-col my-8 py-8">
+    <section className="h-full w-full bg-white flex flex-col my-8 py-8 z-8">
       {/* Introduction Section */}
       {/* Introduction Section */}
       <div className="about_intro w-[90%] mx-auto py-4 my-8 grid grid-cols-1 lg:grid-cols-3  rounded-md px-4">
         {/* Image Section */}
-        <div className="about_image col-span-1 bg-[url('src/assets/doctor-2.jpg')] bg-cover bg-no-repeat h-32 sm:h-48 md:h-64 lg:h-72 xl:h-96 rounded shadow-lg"  data-aos="fade-up"></div>
+        <div className="about_image col-span-1  bg-cover bg-no-repeat h-32 sm:h-48 md:h-64 lg:h-72 xl:h-96 rounded shadow-lg"   style={{ backgroundImage: `url(${doctor2})` }} data-aos="fade-up"></div>
 
         {/* Details Section */}
         <div className="about_details col-span-2 flex flex-col justify-center items-center py-4 mx-10 h-auto"  data-aos="fade-up">
@@ -52,6 +53,7 @@ const AboutUs: React.FC<Props> = () => {
       <div className="about_services w-[95%] mx-auto py-4 my-4"  data-aos="fade-up">
         <h2 className="w-full font-bold text-center my-2 text-lg sm:text-xl md:text-2xl text-indigo-400"   data-aos="fade-up">
           Our Services
+          <span className=" divide-x divide-solid text-indigo-700"></span>
         </h2>
         <p className="text-center text-sm sm:text-base">
           We offer a wide range of services tailored to meet your needs.
@@ -66,6 +68,7 @@ const AboutUs: React.FC<Props> = () => {
         <p className="text-center text-sm sm:text-base">
           Meet the professionals who make it all happen.
         </p>
+         <div className=""></div>
       </div>
     </section>
   );

@@ -40,10 +40,10 @@ section {
       min-height: 100vh;
       margin: 0 auto !important;
       padding: 0;
-      background-color: hwb(0 96% 4%) !important;
+      background-color: hsl(0, 0%, 96%);
 }
 
-footer {
-      z-index: 100px !important;
+footer, header {
+      z-index: 200px !important;
       position: relative;
 }
