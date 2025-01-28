@@ -12,8 +12,8 @@ const AboutUs: React.FC<Props> = () => {
         <div className="about_image col-span-1 bg-[url('src/assets/doctor-2.jpg')] bg-cover bg-no-repeat h-32 sm:h-48 md:h-64 lg:h-72 xl:h-96 rounded shadow-lg"></div>
 
         {/* Details Section */}
-        <div className="about_details col-span-2 flex flex-col justify-center items-center py-4 mx-10 h-100">
-          <div className="w-full h-36 shadow-sm rouded-full bg-white p-4">
+        <div className="about_details col-span-2 flex flex-col justify-center items-center py-4 mx-10 h-auto">
+          <div className="w-full h-36  justify-center items-center  p-4">
           <h2 className="w-full font-bold text-center my-2 text-lg sm:text-xl md:text-2xl text-indigo-400">
             Who We Are
           </h2>
@@ -22,9 +22,9 @@ const AboutUs: React.FC<Props> = () => {
             services.
           </p>
           </div>
-           <div className="w-full h-full flex flex-flow gap-8 py-4 mx-4 h-auto">
+           <div className="w-full h-full  grid lg:grid-cols-2 grid md:grid-cols-2 sm:grid-cols-1 gap-8 py-4 mx-4 h-auto">
                 {/* Mission Section */}
-          <div className="mission sm:w-full mt-6 px-4 shadow-md rounded  bg-white py-4">
+          <div className="cols-span-1 mission sm:w-full mt-6 px-4 shadow-lg rounded-md  bg-white py-4">
             <h3 className="font-bold text-center text-lg sm:text-xl md:text-2xl my-2">
               Our Mission
             </h3>
@@ -35,7 +35,7 @@ const AboutUs: React.FC<Props> = () => {
           </div>
 
           {/* Vision Section */}
-          <div className="vision sm:w-full mt-6 px-4 shadow-md rounded  bg-white">
+          <div className=" cols-span-1 vision sm:w-full mt-6 px-4 shadow-lg rounded-md  bg-white">
             <h3 className="font-bold text-center text-lg sm:text-xl md:text-2xl my-2">
               Our Vision
             </h3>
