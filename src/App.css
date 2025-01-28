@@ -40,7 +40,7 @@ section {
       min-height: 100vh;
       margin: 0 auto !important;
       padding: 0;
-      background-color: #f4f4f4;
+      background-color: hwb(0 96% 4%) !important;
 }
 
 footer {
