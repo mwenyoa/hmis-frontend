@@ -5,7 +5,7 @@ type Props = {};
 
 const NotFound: React.FC<Props> = () => {
   return (
-    <section className="w-full h-screen min-w-screen min-h-screen mx-auto bg-white flex items-center p-5 lg:p-20 overflow-hidden relative">
+    <section className="w-full h-screen min-w-screen min-h-screen mx-auto bg-white flex items-center p-5 lg:p-20 overflow-hidden">
       <div className="h-screen w-screen bg-gray-50 flex items-center">
         <div className="container flex flex-col md:flex-row items-center justify-between px-5 text-gray-700">
           <div className="w-full lg:w-1/2 mx-48">
