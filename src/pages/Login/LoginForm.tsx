@@ -14,15 +14,15 @@ const LoginForm: React.FC<Props> = () => {
   };
 
   return (
-    <section className="flex min-h-full w-full flex-col h-full items-center justify-center px-6 py-12 lg:px-8">
-      <div className="mt-20 sm:mx-auto sm:w-full sm:max-w-sm bg-white shadow-md  rounded-lg p-4">
+    <section className="flex min-h-full w-full flex-col h-full items-center justify-center px-6 my-8 py-2 lg:px-8">
+      <div className="mt-20 sm:mx-auto sm:w-full sm:max-w-sm bg-white shadow-md  rounded-lg p-4 w-full">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
       <CiLogin className="mx-auto h-12 w-auto font-bold" />
         <p className="py-8 text-center text-xl tracking-tight text-dark.-900">
           Sign in to your account
         </p>
       </div>
-        <form className="space-y-6" onSubmit={loginHandler}>
+        <form className="space-y-6 w-full" onSubmit={loginHandler}>
           <div>
             <label
               htmlFor="email"

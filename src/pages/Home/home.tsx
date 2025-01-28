@@ -1,11 +1,13 @@
 import React from "react";
 import { Link } from "react-router";
+import doctor1 from '../../assets/doctor-1.jpg'; // Ensure the path is correct
+
 type Props = {};
 
 export const Home: React.FC<Props> = () => {
   return (
     <section className="w-full h-screen">
-      <div className="flex flex-col-reverse md:flex-row bg-white">
+      <div className="flex flex-col-reverse md:flex-row bg-white h-96 rounded-md">
         {/* Text Section */}
         <div className="flex items-center justify-center text-center md:text-left px-6 md:px-12 py-8  md:py-16  gap-8 w-full md:w-1/2">
           <div>
@@ -35,9 +37,11 @@ export const Home: React.FC<Props> = () => {
         </div>
 
         {/* Hero Image Section */}
-        <div className="md:w-1/2 w-full sm:rounded-md px-6">
+        <div className="md:w-1/2 w-full h-full sm:rounded-md px-6 py-4">
           <div
-            className="h-64 md:h-full  w-full bg-[url('src/assets/doctor-1.jpg')] bg-contain bg-no-repeat bg-center"
+           className="about_image bg-cover bg-no-repeat h-64 sm:h-72 lg:h-full rounded-lg w-full"
+           style={{ backgroundImage: `url(${doctor1})` }}
+           aria-label="Doctor Image"
           />
         </div>
       </div>
