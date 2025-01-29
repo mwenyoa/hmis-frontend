@@ -11,6 +11,9 @@ const Register: React.FC<Props> = () => {
     // Add form submission logic here
   };
 
+   const url: string = import.meta.env.VITE_APP_URL;
+  console.log("app url: ", url);
+
   return (
     <section className="flex min-h-full w-full flex-col items-center justify-center px-6 py-20 lg:px-8">
       <div className="mt-20 sm:mx-auto sm:w-full sm:max-w-4xl  bg-white shadow-md rounded-xl p-4">
@@ -102,6 +105,25 @@ const Register: React.FC<Props> = () => {
             </div>
           </div>
 
+             {/* Password confirmation*/}
+             <div className="col-span-1">
+            <label
+              htmlFor="password_confirmation"
+              className="block text-sm font-medium text-gray-900"
+            >
+              Confirm Password
+            </label>
+            <div className="mt-2">
+              <input
+                type="password"
+                name="password_confirmation"
+                id="password_confirmation"
+                required
+                className="block w-full rounded-md bg-white px-3 py-2 text-sm text-gray-900 outline outline-1 outline-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-indigo-600 focus:outline-none"
+              />
+            </div>
+          </div>
+
           {/* Phone Number */}
           <div className="col-span-1">
             <label
@@ -140,7 +162,6 @@ const Register: React.FC<Props> = () => {
                 <option value="">Select</option>
                 <option value="male">Male</option>
                 <option value="female">Female</option>
-                <option value="other">Other</option>
               </select>
             </div>
           </div>
@@ -210,7 +231,7 @@ const Register: React.FC<Props> = () => {
           </div>
 
           {/* Submit Button */}
-          <div className="col-span-full text-center">
+          <div className="col-span-1 sm:col-span-full text-center">
             <button
               type="submit"
               className="flex w-full justify-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2"
