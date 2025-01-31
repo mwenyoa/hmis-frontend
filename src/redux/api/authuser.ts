@@ -19,11 +19,13 @@ type RegisterData = {
   profile_picture: File | Blob;
 };
 
+const url: string | undefined = axios.defaults.baseURL;
+
 export const logIn = createAsyncThunk(
   "auth/login",
   async (auth: AuthData, { rejectWithValue }) => {
     try {
-      const response = await axios.post("/login", auth);
+      const response = await axios.post(`${url}login`, auth);
       const { token, user } = response.data;
 
       // Set Authorization header globally
@@ -40,7 +42,7 @@ export const registerUser = createAsyncThunk(
   "auth/register",
   async (user: RegisterData, { rejectWithValue }) => {
     try {
-      const response = await axios.post("/register", user);
+      const response = await axios.post(`${url}register`, user);
       const { token, user: userData } = response.data;
 
       // Set Authorization header globally
@@ -65,7 +67,7 @@ export const fetchUser = createAsyncThunk(
       if (!token) throw new Error("No token found");
 
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      const response = await axios.get("/user");
+      const response = await axios.get(`${url}user`);
 
       return response.data;
     } catch (err: any) {
@@ -81,7 +83,7 @@ export const logOut = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       await axios.post(
-        "/logout",
+        `${url}logout`,
         {},
         {
           headers: {
