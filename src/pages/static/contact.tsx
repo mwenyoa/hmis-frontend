@@ -4,7 +4,7 @@ type Props = {};
 
 export const ContactUs: React.FC<Props> = () => {
   return (
-    <section className="my-20 px-5 sm:my-24 sm:px-8 lg:my-32 lg:px-16">
+    <section className="my-20 px-5 sm:my-36 sm:px-8 lg:my-32 lg:px-16">
       <div className="flex justify-center">
         <div className="text-center max-w-3xl">
           <h2 className="mb-12 text-3xl font-bold md:text-4xl">Contact us</h2>
