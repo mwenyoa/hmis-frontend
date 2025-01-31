@@ -19,7 +19,7 @@ const App: React.FC<Props> = () => {
   useEffect(() => {
     AOS.init({
       duration: 700,
-      easing: "ease-out-cubic",
+      easing: "ease-out-quart",
     });
   }, []); 
 
