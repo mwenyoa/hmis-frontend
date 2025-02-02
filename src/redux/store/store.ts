@@ -1,11 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import logger from "redux-logger";
-import authReducer from "../reducers/authSlice";
+import authSlice from "../reducers/authSlice";
 
 const NODE_ENV: string | undefined = import.meta.env.VITE_APP_NODE_ENV;
 
 const store = configureStore({
-  reducer: { auth: authReducer },
+  reducer: { auth: authSlice },
   middleware: (getDefaultMiddleware) =>
     NODE_ENV === "development"
       ? getDefaultMiddleware().concat(logger)
