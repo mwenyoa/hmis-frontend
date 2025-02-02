@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { logIn, registerUser, logOut, fetchUser } from "../api";
+import { logIn, registerUser, logOut, fetchUser } from "../api/authuser";
 
 interface AuthState {
   user: any;
