@@ -10,6 +10,11 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import "./App.css";
 
+import apiClient from "./utils/axios";
+
+
+
+
 
 type Props = {};
 
@@ -22,6 +27,8 @@ const App: React.FC<Props> = () => {
       easing: "ease-out-quart",
     });
   }, []); 
+
+  console.log("Api Client", apiClient);
 
   return (
         <Router>

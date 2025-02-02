@@ -6,20 +6,20 @@ type AuthData = {
   password: string;
 };
 
-type RegisterData = {
-  first_name: string;
-  last_name: string;
-  email: string;
-  password: string;
-  password_confirmation: string;
-  phoneno: string;
-  gender: string;
-  age: number;
-  marital_status: string;
-  profile_picture: File | Blob;
-};
+type registerInfo = {
+   first_name: string,
+   last_name: string,
+   email: string,
+   password: string,
+   password_confirmation: string,
+   phoneno: string,
+   age: number,
+   gender: string
+}
 
-export const logIn = createAsyncThunk(
+console.log("Api Client", apiClient);
+
+ const logIn = createAsyncThunk(
   "auth/login",
   async (auth: AuthData, { rejectWithValue }) => {
     try {
@@ -36,9 +36,9 @@ export const logIn = createAsyncThunk(
   }
 );
 
-export const registerUser = createAsyncThunk(
+ const registerUser = createAsyncThunk(
   "auth/register",
-  async (user: RegisterData, { rejectWithValue }) => {
+  async (user: registerInfo, { rejectWithValue }) => {
     try {
       const response = await apiClient.post("register", user);
       const { token, user: userData } = response.data;
@@ -55,7 +55,7 @@ export const registerUser = createAsyncThunk(
   }
 );
 
-export const fetchUser = createAsyncThunk(
+ const fetchUser = createAsyncThunk(
   "auth/fetchUser",
   async (_, { rejectWithValue, getState }) => {
     try {
@@ -78,7 +78,7 @@ export const fetchUser = createAsyncThunk(
 
 // logout user 
 
-export const logOut = createAsyncThunk(
+ const logOut = createAsyncThunk(
   "auth/logout",
   async (_, { rejectWithValue }) => {
     try {
@@ -97,3 +97,5 @@ export const logOut = createAsyncThunk(
     }
   }
 );
+const userAuth = { fetchUser, logIn, registerUser, logOut }
+export default userAuth;

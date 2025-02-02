@@ -1,16 +1,16 @@
 import React from "react";
-import doctor2  from "../../assets/doctor-2.jpg";
 
 type Props = {};
 
 const AboutUs: React.FC<Props> = () => {
+
   return (
     <section className="h-full w-full bg-white flex flex-col my-8 py-8">
       {/* Introduction Section */}
       {/* Introduction Section */}
       <div className="about_intro w-[90%] mx-auto py-4 my-8 grid grid-cols-1 lg:grid-cols-3  rounded-md px-4">
         {/* Image Section */}
-        <div className="about_image col-span-1  bg-cover bg-no-repeat h-32 sm:h-48 md:h-64 lg:h-72 xl:h-96 rounded shadow-md"   style={{ backgroundImage: `url(${doctor2})` }} data-aos="fade-up"></div>
+        <div className="about_image col-span-1  bg-cover bg-no-repeat h-32 sm:h-48 md:h-64 lg:h-72 xl:h-96 rounded shadow-md"   style={{ backgroundImage: "url(/images/doctor2.jpg)" }} data-aos="fade-up"></div>
 
         {/* Details Section */}
         <div className="about_details col-span-2 flex flex-col justify-center items-center py-4 mx-10 h-auto"  data-aos="fade-up">

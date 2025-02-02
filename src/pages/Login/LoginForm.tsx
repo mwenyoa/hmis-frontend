@@ -19,7 +19,7 @@ const LoginForm: React.FC = () => {
     const email = emailRef.current?.value || "";
     const password = passwordRef.current?.value || "";
 
-    const resultAction = await handleLogin({ email, password });
+     await handleLogin({ email, password });
 
     if (isAuthenticated) {
       navigate("/dashboard"); // Redirect after successful login

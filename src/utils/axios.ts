@@ -14,7 +14,7 @@ const apiClient = axios.create({
 // add token to request headers using axios interceptors
 apiClient.interceptors.request.use(
   (config) => {
-    const state = store.getState();
+    const state = store?.getState();
     const token = state.auth.token;
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;

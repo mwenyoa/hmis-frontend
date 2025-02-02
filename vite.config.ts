@@ -4,7 +4,7 @@ export default defineConfig({
   server: {
     port: 3000, // Ensure this matches the actual running port
     hmr: {
-      protocol: "http",
+      protocol: "ws",
       host: "localhost",
     },
     proxy: {

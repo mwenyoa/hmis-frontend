@@ -11,9 +11,6 @@ const Register: React.FC<Props> = () => {
     // Add form submission logic here
   };
 
-   const url: string = import.meta.env.VITE_APP_URL;
-  console.log("app url: ", url);
-
   return (
     <section className="flex min-h-full w-full flex-col items-center justify-center px-6 py-20 lg:px-8">
       <div className="mt-20 sm:mx-auto sm:w-full sm:max-w-4xl  bg-white shadow-md rounded-xl p-4">

@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router";
-import doctor1 from '../../assets/doctor-1.jpg'; // Ensure the path is correct
 
 type Props = {};
 
@@ -40,7 +39,7 @@ export const Home: React.FC<Props> = () => {
         <div className="md:w-1/2 w-full h-full sm:rounded-md px-6 py-4">
           <div
            className="about_image bg-cover bg-no-repeat h-64 sm:h-72 lg:h-full rounded-lg w-full"
-           style={{ backgroundImage: `url(${doctor1})` }}
+           style={{ backgroundImage: `url(/images/doctor1.jpg)` }}
            aria-label="Doctor Image"
           />
         </div>
