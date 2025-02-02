@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "../../utils/axios";
+import apiClient from "../../utils/axios";
 
 type AuthData = {
   email: string;
@@ -19,18 +19,16 @@ type RegisterData = {
   profile_picture: File | Blob;
 };
 
-const url: string | undefined = axios.defaults.baseURL;
-
 export const logIn = createAsyncThunk(
   "auth/login",
   async (auth: AuthData, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`${url}login`, auth);
+      const response = await apiClient.post("/login", auth);
+      console.log("response: ", response);
       const { token, user } = response.data;
 
       // Set Authorization header globally
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-
+      apiClient.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       return { user, token };
     } catch (err: any) {
       return rejectWithValue(err.response?.data?.message || "Login failed");
@@ -42,11 +40,11 @@ export const registerUser = createAsyncThunk(
   "auth/register",
   async (user: RegisterData, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`${url}register`, user);
+      const response = await apiClient.post("register", user);
       const { token, user: userData } = response.data;
 
       // Set Authorization header globally
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      apiClient.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
       return { user: userData, token };
     } catch (err: any) {
@@ -66,8 +64,8 @@ export const fetchUser = createAsyncThunk(
 
       if (!token) throw new Error("No token found");
 
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      const response = await axios.get(`${url}user`);
+      apiClient.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      const response = await apiClient.get("/user");
 
       return response.data;
     } catch (err: any) {
@@ -78,22 +76,20 @@ export const fetchUser = createAsyncThunk(
   }
 );
 
+// logout user 
+
 export const logOut = createAsyncThunk(
   "auth/logout",
   async (_, { rejectWithValue }) => {
     try {
-      await axios.post(
-        `${url}logout`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${axios.defaults.headers.common["Authorization"]}`,
-          },
-        }
-      );
+      await apiClient.delete("/logout", {
+        headers: {
+          Authorization: `Bearer ${apiClient.defaults.headers.common["Authorization"]}`,
+        },
+      });
 
       // Remove token from axios headers
-      delete axios.defaults.headers.common["Authorization"];
+      delete apiClient.defaults.headers.common["Authorization"];
 
       return null; // Clear user & token from Redux state
     } catch (err: any) {
