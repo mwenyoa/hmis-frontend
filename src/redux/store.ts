@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import logger from "redux-logger";
-import authSlice from "../reducers/authSlice";
+import authSlice from "./reducers/authSlice";
 
 const NODE_ENV: string | undefined = import.meta.env.VITE_APP_NODE_ENV;
 

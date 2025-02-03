@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import userAuth from "../api/authuser";
+import { fetchUser, logIn, registerUser, logOut } from "../authActions";
 
 interface AuthState {
   user: any;
@@ -16,8 +16,8 @@ const initialState: AuthState = {
   isLoading: false,
   error: null,
 };
-const { fetchUser, logIn, registerUser, logOut } = userAuth;
-console.log("log: ", userAuth);
+
+console.log("log: ", logIn);
 
 
 

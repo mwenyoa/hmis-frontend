@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../redux/store/store";
-import userAuth from "../redux/api/authuser";
+import { AppDispatch, RootState } from "../redux/store";
+import { logIn } from "../redux/authActions";
 
 type AuthCredentials = {
   email: string;
@@ -10,8 +10,9 @@ type AuthCredentials = {
 
 const useLogIn = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { isAuthenticated, isLoading, error } = useSelector((state: RootState) => state.auth);
-  const { logIn } = userAuth;
+  const { isAuthenticated, isLoading, error } = useSelector(
+    (state: RootState) => state.auth
+  );
   // Memoized login function
   const handleLogin = useCallback(
     async (credentials: AuthCredentials) => {
