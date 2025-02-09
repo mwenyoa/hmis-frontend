@@ -6,10 +6,7 @@ const NODE_ENV: string | undefined = import.meta.env.VITE_APP_NODE_ENV;
 
 
 const serializableCheckConfig = {
-  serializableCheck: {
-    ignoredActionPaths: ["meta.arg", "payload.timestamp"],
-    ignoredPaths: ["items.dates"],
-  },
+  serializableCheck: {},
 };
 
 // Correctly call the `middleware` function here

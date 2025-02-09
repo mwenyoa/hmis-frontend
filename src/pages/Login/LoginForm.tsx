@@ -1,29 +1,40 @@
-import React, { useRef } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { CiLogin } from "react-icons/ci";
 import { useNavigate } from "react-router";
 import useLogIn from "../../hooks/useLogin";
 
+
+
+
+
+interface UserInfo {
+  email: string;
+  password: string;
+}
+
+const initialInfo: UserInfo = {
+  email: "",
+  password: "",
+};
+
 const LoginForm: React.FC = () => {
   const navigate = useNavigate();
   const { handleLogin, isAuthenticated, isLoading, error } = useLogIn();
-
+  const [info, setInfo] = useState<UserInfo>(initialInfo);
   // Using useRef instead of useState
-  const emailRef = useRef<HTMLInputElement>(null);
-  const passwordRef = useRef<HTMLInputElement>(null);
-
+  const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const {  name, value } = e.target;
+      setInfo({ ...info, [name]: value });
+  };
+    
   const loginHandler = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    // Get values from refs
-    const email = emailRef.current?.value || "";
-    const password = passwordRef.current?.value || "";
-
-     await handleLogin({ email, password });
-
     if (isAuthenticated) {
       navigate("/dashboard"); // Redirect after successful login
     }
+      const { email, password } = info;
+    return await handleLogin({ email, password });
   };
 
   return (
@@ -42,7 +53,7 @@ const LoginForm: React.FC = () => {
             </label>
             <div className="mt-2">
               <input
-                ref={emailRef} // Attach useRef
+                onChange={changeHandler}
                 type="email"
                 name="email"
                 id="email"
@@ -59,12 +70,12 @@ const LoginForm: React.FC = () => {
             </label>
             <div className="mt-2">
               <input
-                ref={passwordRef} // Attach useRef
                 type="password"
                 name="password"
                 id="password"
                 autoComplete="current-password"
                 required
+                onChange={changeHandler}
                 className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm"
               />
             </div>
@@ -76,7 +87,6 @@ const LoginForm: React.FC = () => {
             <button
               type="submit"
               className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              disabled={isLoading}
             >
               {isLoading ? "Signing in..." : "Sign in"}
             </button>

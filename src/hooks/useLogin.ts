@@ -8,6 +8,8 @@ type AuthCredentials = {
   password: string;
 };
 
+const url: string | null = import.meta.env.VITE_API_URL;
+
 const useLogIn = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { isAuthenticated, isLoading, error } = useSelector(
@@ -16,7 +18,7 @@ const useLogIn = () => {
   // Memoized login function
   const handleLogin = useCallback(
     async (credentials: AuthCredentials) => {
-      return await dispatch(logIn(credentials));
+       await dispatch(logIn(credentials));
     },
     [dispatch]
   );

@@ -28,7 +28,6 @@ const App: React.FC<Props> = () => {
     });
   }, []); 
 
-  console.log("Api Client", apiClient);
 
   return (
         <Router>

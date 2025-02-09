@@ -1,43 +1,16 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import apiClient from "../utils/axios";
-import store, { RootState } from "./store";
-import _ from "lodash"
+import _ from "lodash";
+import { AuthResponse, AuthData, ErrorResponse, RegisterInfo } from "./authTypes";
 
 
-interface AuthData {
-  email: string;
-  password: string;
-}
-
-interface RegisterInfo {
-  first_name: string;
-  last_name: string;
-  email: string;
-  password: string;
-  password_confirmation: string;
-  phoneno: string;
-  age: number;
-  gender: string;
-}
-
-interface AuthResponse {
-  user: any; // Replace 'any' with a proper user type if available
-  token: string;
-}
-
-interface ErrorResponse {
-  response?: {
-    data?: {
-      message?: string;
-    };
-  };
-}
 
 export const logIn = createAsyncThunk<AuthResponse, AuthData>(
   "auth/login",
   async (auth, { rejectWithValue }) => {
     try {
       const response = await apiClient.post<AuthResponse>("/login", auth);
+       console.log("Response: ", response);
       const { token, user } = response.data;
 
       apiClient.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -71,8 +44,8 @@ export const fetchUser = createAsyncThunk<any>(
   "auth/fetchUser",
   async (_, { rejectWithValue }) => {
     try {
-      const state: RootState = store.getState() as RootState;
-      const token = state.auth.token;
+      const token: any = apiClient.defaults.headers.common.Authorization
+  
 
       if (!token) throw new Error("No token found");
 
