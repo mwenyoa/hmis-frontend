@@ -1,18 +1,10 @@
-import { defineConfig } from 'vite';
+import { defineConfig } from "vite";
+import { externalizeDeps } from "vite-plugin-externalize-deps";
+import circleDependency from "vite-plugin-circular-dependency";
 
 export default defineConfig({
   server: {
     port: 3000, // Ensure this matches the actual running port
-    hmr: {
-      protocol: "ws",
-      host: "localhost",
-    },
-    proxy: {
-      "/api": {
-        target: "http://localhost:8000",
-        changeOrigin: true,
-        secure: false,
-      },
-    },
   },
+  plugins: [externalizeDeps(), circleDependency()],
 });

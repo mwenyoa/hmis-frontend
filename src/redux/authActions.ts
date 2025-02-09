@@ -1,7 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import apiClient from "../utils/axios";
-import store from "./store";
+import store, { RootState } from "./store";
 import _ from "lodash"
+
 
 interface AuthData {
   email: string;
@@ -43,7 +44,7 @@ export const logIn = createAsyncThunk<AuthResponse, AuthData>(
       return { user, token };
     } catch (err) {
       const error = err as ErrorResponse;
-      return rejectWithValue(error.response?.data?.message || "Login failed");
+      return rejectWithValue(error?.response?.data?.message || "Login failed");
     }
   }
 );
@@ -70,7 +71,7 @@ export const fetchUser = createAsyncThunk<any>(
   "auth/fetchUser",
   async (_, { rejectWithValue }) => {
     try {
-      const state = store.getState();
+      const state: RootState = store.getState() as RootState;
       const token = state.auth.token;
 
       if (!token) throw new Error("No token found");
@@ -86,6 +87,7 @@ export const fetchUser = createAsyncThunk<any>(
     }
   }
 );
+
 
 export  const logOut = createAsyncThunk<void, void>(
   "auth/logout",
