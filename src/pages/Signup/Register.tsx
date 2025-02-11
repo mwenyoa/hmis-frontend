@@ -1,14 +1,87 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FiUserPlus } from "react-icons/fi";
 
 type Props = {};
 
+// Register Interface
+interface regUser {
+  first_name: string;
+  last_name: string;
+  email: string;
+  password: string;
+  password_confirmation: string;
+  gender: string | number | readonly string[] | undefined;
+  age: number;
+  profile_picture: File | null;
+  marital_status: string;
+  phoneno: number | null;
+}
+
+const initialUser: regUser = {
+  first_name: "",
+  last_name: "",
+  email: "",
+  password: "",
+  profile_picture: null,
+  password_confirmation: "",
+  marital_status: "",
+  gender: "",
+  age: 0,
+  phoneno: null,
+};
+
 const Register: React.FC<Props> = () => {
+  const [option, setOption] = useState<
+    string | number | readonly string[] | undefined
+  >(undefined);
+  const [user, setUser] = useState<regUser>(initialUser);
   // Handle form submission
   const registerHandler = (e: React.FormEvent) => {
     e.preventDefault();
     // Add form submission logic here
+    const {
+      password,
+      password_confirmation,
+      email,
+      first_name,
+      last_name,
+      age,
+      gender,
+      marital_status,
+      profile_picture,
+    } = user;
+    if (
+      first_name &&
+      last_name &&
+      email &&
+      password &&
+      password_confirmation &&
+      gender &&
+      marital_status !== "" &&
+      age !== 0 &&
+      profile_picture !== null
+    ) {
+      const formData = new FormData();
+      
+    }
+  };
+
+  const chnageHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { files, name, value } = e.target;
+    if (e.target.type === "file") {
+      if (files && files?.length > 0) {
+        setUser({ ...user, [name]: files?.[0] });
+      }
+    } else {
+      setUser({ ...user, [name]: value });
+    }
+  };
+
+  const selectChangeHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { value, name } = e.target;
+    setOption(value);
+    setUser({ ...user, [name]: value });
   };
 
   return (
@@ -39,6 +112,7 @@ const Register: React.FC<Props> = () => {
                 type="text"
                 name="first_name"
                 id="first_name"
+                onChange={chnageHandler}
                 required
                 className="block w-full rounded-md bg-white px-3 py-2 text-sm text-gray-900 outline outline-1 outline-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-indigo-600 focus:outline-none"
               />
@@ -58,6 +132,7 @@ const Register: React.FC<Props> = () => {
                 type="text"
                 name="last_name"
                 id="last_name"
+                onChange={chnageHandler}
                 required
                 className="block w-full rounded-md bg-white px-3 py-2 text-sm text-gray-900 outline outline-1 outline-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-indigo-600 focus:outline-none"
               />
@@ -77,6 +152,7 @@ const Register: React.FC<Props> = () => {
                 type="email"
                 name="email"
                 id="email"
+                onChange={chnageHandler}
                 required
                 className="block w-full rounded-md bg-white px-3 py-2 text-sm text-gray-900 outline outline-1 outline-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-indigo-600 focus:outline-none"
               />
@@ -96,14 +172,16 @@ const Register: React.FC<Props> = () => {
                 type="password"
                 name="password"
                 id="password"
+                autoComplete="off"
+                onChange={chnageHandler}
                 required
                 className="block w-full rounded-md bg-white px-3 py-2 text-sm text-gray-900 outline outline-1 outline-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-indigo-600 focus:outline-none"
               />
             </div>
           </div>
 
-             {/* Password confirmation*/}
-             <div className="col-span-1">
+          {/* Password confirmation*/}
+          <div className="col-span-1">
             <label
               htmlFor="password_confirmation"
               className="block text-sm font-medium text-gray-900"
@@ -115,6 +193,8 @@ const Register: React.FC<Props> = () => {
                 type="password"
                 name="password_confirmation"
                 id="password_confirmation"
+                autoComplete="off"
+                onChange={chnageHandler}
                 required
                 className="block w-full rounded-md bg-white px-3 py-2 text-sm text-gray-900 outline outline-1 outline-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-indigo-600 focus:outline-none"
               />
@@ -135,6 +215,7 @@ const Register: React.FC<Props> = () => {
                 name="phoneno"
                 id="phoneno"
                 pattern="[0-9]{10}"
+                onChange={chnageHandler}
                 required
                 className="block w-full rounded-md bg-white px-3 py-2 text-sm text-gray-900 outline outline-1 outline-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-indigo-600 focus:outline-none"
               />
@@ -153,6 +234,8 @@ const Register: React.FC<Props> = () => {
               <select
                 name="gender"
                 id="gender"
+                onChange={selectChangeHandler}
+                value={option}
                 required
                 className="block w-full rounded-md bg-white px-3 py-2 text-sm text-gray-900 outline outline-1 outline-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-indigo-600 focus:outline-none"
               >
@@ -177,6 +260,7 @@ const Register: React.FC<Props> = () => {
                 name="age"
                 id="age"
                 min="1"
+                onChange={chnageHandler}
                 required
                 className="block w-full rounded-md bg-white px-3 py-2 text-sm text-gray-900 outline outline-1 outline-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-indigo-600 focus:outline-none"
               />
@@ -195,6 +279,8 @@ const Register: React.FC<Props> = () => {
               <select
                 name="marital_status"
                 id="marital_status"
+                onChange={selectChangeHandler}
+                value={option}
                 required
                 className="block w-full rounded-md bg-white px-3 py-2 text-sm text-gray-900 outline outline-1 outline-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-indigo-600 focus:outline-none"
               >
@@ -210,7 +296,7 @@ const Register: React.FC<Props> = () => {
           {/* Photo URL */}
           <div className="col-span-1">
             <label
-              htmlFor="photo_url"
+              htmlFor="profile_picture"
               className="block text-sm font-medium text-gray-900"
             >
               Profile Picture
@@ -221,6 +307,7 @@ const Register: React.FC<Props> = () => {
                 accept="image/*"
                 name="profile_picture"
                 id="profile_picture"
+                onChange={chnageHandler}
                 required
                 className="block w-full rounded-md bg-white px-3 py-2 text-sm text-gray-900 outline outline-1 outline-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-indigo-600 focus:outline-none"
               />
@@ -250,6 +337,6 @@ const Register: React.FC<Props> = () => {
       </div>
     </section>
   );
-}
+};
 
 export default Register;
