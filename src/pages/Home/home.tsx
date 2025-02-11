@@ -4,8 +4,6 @@ import { Link } from "react-router";
 type Props = {};
 
 export const Home: React.FC<Props> = () => {
-  const url: string | undefined = import.meta.env.VITE_API_URL;
-  console.log("url", url);
   return (
     <section className="w-full h-screen">
       <div className="flex flex-col-reverse md:flex-row bg-white h-96 rounded-md">
