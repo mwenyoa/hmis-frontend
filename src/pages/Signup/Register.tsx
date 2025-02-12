@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FiUserPlus } from "react-icons/fi";
+import useRegister from "../../hooks/useRegister";
+import useSweetAlert from "../../hooks/useSweetAlert";
 
 type Props = {};
 
@@ -14,7 +16,7 @@ interface regUser {
   gender: string | number | readonly string[] | undefined;
   age: number;
   profile_picture: File | null;
-  marital_status: string;
+  marital_status: string | number | readonly string[] | undefined;
   phoneno: number | null;
 }
 
@@ -32,12 +34,15 @@ const initialUser: regUser = {
 };
 
 const Register: React.FC<Props> = () => {
+  // hooks
   const [option, setOption] = useState<
     string | number | readonly string[] | undefined
   >(undefined);
   const [user, setUser] = useState<regUser>(initialUser);
+  const { handleRgister, error, isLoading, isAuthenticated} = useRegister();
+  const  {ShowAlert } = useSweetAlert();
   // Handle form submission
-  const registerHandler = (e: React.FormEvent) => {
+  const registerHandler = async(e: React.FormEvent) => {
     e.preventDefault();
     // Add form submission logic here
     const {
@@ -62,8 +67,10 @@ const Register: React.FC<Props> = () => {
       age !== 0 &&
       profile_picture !== null
     ) {
-      const formData = new FormData();
-      
+       const response: never | unknown = await handleRgister(user);
+       if(response){
+
+       }
     }
   };
 
