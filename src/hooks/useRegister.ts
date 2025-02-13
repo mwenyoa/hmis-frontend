@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "../redux/store";
-import { registerUser } from "../redux/authActions";
+import { registerUser } from "../redux/reducers/authSlice";
 
 interface RegisterInfo {
   password: string;
@@ -24,12 +24,12 @@ const useRegister = () => {
   // memoized user registration
   const handleRgister = useCallback(
     async (userData: RegisterInfo) => {
-      if (user?.length === 0) {
         await dispatch(registerUser(userData));
-      }
+      
     },
     [dispatch]
   );
+
   return { user, isLoading, handleRgister, isAuthenticated, error };
 };
 

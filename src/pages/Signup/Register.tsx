@@ -34,15 +34,12 @@ const initialUser: regUser = {
 };
 
 const Register: React.FC<Props> = () => {
-  // hooks
-  const [option, setOption] = useState<
-    string | number | readonly string[] | undefined
-  >(undefined);
+
   const [user, setUser] = useState<regUser>(initialUser);
-  const { handleRgister, error, isLoading, isAuthenticated} = useRegister();
-  const  {ShowAlert } = useSweetAlert();
+  const { handleRgister, error, isLoading, isAuthenticated } = useRegister();
+  const { ShowAlert } = useSweetAlert({});
   // Handle form submission
-  const registerHandler = async(e: React.FormEvent) => {
+  const registerHandler = async (e: React.FormEvent) => {
     e.preventDefault();
     // Add form submission logic here
     const {
@@ -67,10 +64,24 @@ const Register: React.FC<Props> = () => {
       age !== 0 &&
       profile_picture !== null
     ) {
-       const response: never | unknown = await handleRgister(user);
-       if(response){
-
-       }
+      const response: never | unknown = await handleRgister(user);
+      console.log("response: ", response, error);
+      if (response) {
+        console.log("Response: ", response);
+        ShowAlert({
+          title: "Success",
+          text: "User Registration Successful",
+          icon: "success",
+          time: 2000,
+        });
+      }
+    } else {
+      ShowAlert({
+        title: "Failed",
+        text: "User Registration Failed",
+        icon: "fail",
+        time: 2000,
+      });
     }
   };
 
@@ -87,7 +98,6 @@ const Register: React.FC<Props> = () => {
 
   const selectChangeHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { value, name } = e.target;
-    setOption(value);
     setUser({ ...user, [name]: value });
   };
 
@@ -242,7 +252,7 @@ const Register: React.FC<Props> = () => {
                 name="gender"
                 id="gender"
                 onChange={selectChangeHandler}
-                value={option}
+                value={user?.gender}
                 required
                 className="block w-full rounded-md bg-white px-3 py-2 text-sm text-gray-900 outline outline-1 outline-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-indigo-600 focus:outline-none"
               >
@@ -287,7 +297,7 @@ const Register: React.FC<Props> = () => {
                 name="marital_status"
                 id="marital_status"
                 onChange={selectChangeHandler}
-                value={option}
+                value={user?.marital_status}
                 required
                 className="block w-full rounded-md bg-white px-3 py-2 text-sm text-gray-900 outline outline-1 outline-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-indigo-600 focus:outline-none"
               >

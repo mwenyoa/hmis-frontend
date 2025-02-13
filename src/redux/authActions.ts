@@ -24,7 +24,7 @@ export const logIn = createAsyncThunk<AuthResponse, AuthData>(
 
 export const registerUser = createAsyncThunk<AuthResponse, RegisterInfo>(
   "auth/register",
-  async (user, { rejectWithValue }) => {
+  async (user) => {
     try {
       const response = await apiClient.post<AuthResponse>("/register", user);
       const { token, user: userData } = response.data;
@@ -33,9 +33,7 @@ export const registerUser = createAsyncThunk<AuthResponse, RegisterInfo>(
       return { user: userData, token };
     } catch (err) {
       const error = err as ErrorResponse;
-      return rejectWithValue(
-        error.response?.data?.message || "Registration failed"
-      );
+        throw new Error(  error.response?.data?.message || "Registration failed");
     }
   }
 );

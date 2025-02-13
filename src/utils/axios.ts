@@ -1,10 +1,10 @@
 import axios from "axios";
 import store, {RootState} from "../redux/store";
 
-const url: string | undefined = import.meta.env.VITE_API_URL;
+// const url: string | undefined = import.meta.env.VITE_API_URL;
 
 const apiClient = axios.create({
-  baseURL: `${url}/api`,
+  baseURL: "localhost:8000/api",
   timeout: 5000,
   headers: {
     "Content-Type": "application/json",
@@ -17,9 +17,9 @@ apiClient.interceptors.request.use(
     const state = store.getState() as RootState;
     const token: string | null = state?.auth?.token;
      if(!token){
-      throw new Error("No")
+      throw new Error("No token found")
      }
-    if (token) {
+    else  {
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;

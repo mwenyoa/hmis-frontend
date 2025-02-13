@@ -4,7 +4,7 @@ import apiClient from "../../utils/axios";
 
 
 
- const logIn = createAsyncThunk<AuthResponse, AuthData>(
+ export const logIn = createAsyncThunk<AuthResponse, AuthData>(
   "auth/login",
   async (auth, { rejectWithValue }) => {
     try {
@@ -21,7 +21,7 @@ import apiClient from "../../utils/axios";
   }
 );
 
- const registerUser = createAsyncThunk<AuthResponse, RegisterInfo>(
+ export const registerUser = createAsyncThunk<AuthResponse, RegisterInfo>(
   "auth/register",
   async (user, { rejectWithValue }) => {
     try {
@@ -39,7 +39,7 @@ import apiClient from "../../utils/axios";
   }
 );
 
- const fetchUser = createAsyncThunk<any>(
+ export const fetchUser = createAsyncThunk<any>(
   "auth/fetchUser",
   async (_, { rejectWithValue }) => {
     try {
@@ -61,7 +61,7 @@ import apiClient from "../../utils/axios";
 );
 
 
-  const logOut = createAsyncThunk<void, void>(
+  export const logOut = createAsyncThunk<void, void>(
   "auth/logout",
   async (_, { rejectWithValue }) => {
     try {
