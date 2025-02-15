@@ -3,7 +3,6 @@ import { AuthResponse, AuthData, ErrorResponse, RegisterInfo, AuthState } from "
 import apiClient from "../../utils/axios";
 
 
-
  export const logIn = createAsyncThunk<AuthResponse, AuthData>(
   "auth/login",
   async (auth, { rejectWithValue }) => {
@@ -21,20 +20,27 @@ import apiClient from "../../utils/axios";
   }
 );
 
- export const registerUser = createAsyncThunk<AuthResponse, RegisterInfo>(
+export const registerUser = createAsyncThunk<AuthResponse, RegisterInfo>(
   "auth/register",
   async (user, { rejectWithValue }) => {
     try {
-      const response = await apiClient.post<AuthResponse>("/register", user);
+      const response = await apiClient.post<AuthResponse>("/register", user, {
+        skipAuth: true, // Use the custom property
+      } as CustomAxiosRequestConfig);
       const { token, user: userData } = response.data;
 
+      // Set the Authorization header (optional, consider moving this to an interceptor)
       apiClient.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
       return { user: userData, token };
     } catch (err) {
       const error = err as ErrorResponse;
-      return rejectWithValue(
-        error.response?.data?.message || "Registration failed"
-      );
+
+      // Log the error for debugging
+      console.error("Registration Error: ", error);
+
+      // Use rejectWithValue to pass the error message to the reducer
+      return rejectWithValue(error.response?.data?.message || "Registration failed");
     }
   }
 );
@@ -54,7 +60,7 @@ import apiClient from "../../utils/axios";
     } catch (err) {
       const error = err as ErrorResponse;
       return rejectWithValue(
-        error.response?.data?.message || "Could not fetch user"
+        error?.response?.data?.message || "Could not fetch user"
       );
     }
   }
@@ -75,7 +81,7 @@ import apiClient from "../../utils/axios";
       return;
     } catch (err) {
       const error = err as ErrorResponse;
-      return rejectWithValue(error.response?.data?.message || "Logout failed");
+      return rejectWithValue(error?.response?.data?.message || "Logout failed");
     }
   }
 );
@@ -87,7 +93,7 @@ const initialState: AuthState = {
   token: null,
   isAuthenticated: false,
   isLoading: false,
-  error: null,
+  error: undefined,
 };
 
 
@@ -100,7 +106,7 @@ const authSlice = createSlice({
       // Login
       .addCase(logIn.pending, (state) => {
         state.isLoading = true;
-        state.error = null;
+        state.error = undefined;
       })
       .addCase(logIn.fulfilled, (state, action: PayloadAction<{ user: any; token: string }>) => {
         state.isLoading = false;
@@ -116,7 +122,7 @@ const authSlice = createSlice({
       // Register
       .addCase(registerUser.pending, (state) => {
         state.isLoading = true;
-        state.error = null;
+        state.error = undefined;
       })
       .addCase(registerUser.fulfilled, (state, action: PayloadAction<{ user: any; token: string }>) => {
         state.isLoading = false;
@@ -126,7 +132,7 @@ const authSlice = createSlice({
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload as string;
+        state.error = action.error.message;
       })
 
       // Logout

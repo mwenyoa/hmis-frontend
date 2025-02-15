@@ -13,10 +13,10 @@ interface regUser {
   email: string;
   password: string;
   password_confirmation: string;
-  gender: string | number | readonly string[] | undefined;
+  gender: string | null;
   age: number;
   profile_picture: File | null;
-  marital_status: string | number | readonly string[] | undefined;
+  marital_status: string;
   phoneno: number | null;
 }
 
@@ -34,12 +34,11 @@ const initialUser: regUser = {
 };
 
 const Register: React.FC<Props> = () => {
-
   const [user, setUser] = useState<regUser>(initialUser);
-  const { handleRgister, error, isLoading, isAuthenticated } = useRegister();
+  const { handleRegister, error, isLoading, isAuthenticated } = useRegister();
   const { ShowAlert } = useSweetAlert({});
   // Handle form submission
-  const registerHandler = async (e: React.FormEvent) => {
+  const registerHandler = (e: React.FormEvent) => {
     e.preventDefault();
     // Add form submission logic here
     const {
@@ -64,7 +63,8 @@ const Register: React.FC<Props> = () => {
       age !== 0 &&
       profile_picture !== null
     ) {
-      const response: never | unknown = await handleRgister(user);
+          const response =  handleRegister(user);
+      console.log("respose: ", response)
       console.log("response: ", response, error);
       if (response) {
         console.log("Response: ", response);
@@ -74,15 +74,15 @@ const Register: React.FC<Props> = () => {
           icon: "success",
           time: 2000,
         });
-      }
-    } else {
-      ShowAlert({
-        title: "Failed",
-        text: "User Registration Failed",
-        icon: "fail",
-        time: 2000,
-      });
-    }
+      }else {
+        ShowAlert({
+          title: "Failed",
+          text: "User Registration Failed",
+          icon: "fail",
+          time: 2000,
+        });
+      };
+    } 
   };
 
   const chnageHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -277,7 +277,8 @@ const Register: React.FC<Props> = () => {
                 name="age"
                 id="age"
                 min="1"
-                onChange={chnageHandler}
+                onChange={selectChangeHandler}
+                value={user?.age}
                 required
                 className="block w-full rounded-md bg-white px-3 py-2 text-sm text-gray-900 outline outline-1 outline-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-indigo-600 focus:outline-none"
               />

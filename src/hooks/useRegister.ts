@@ -10,27 +10,27 @@ interface RegisterInfo {
   first_name: string;
   last_name: string;
   age: number | null;
-  gender: string | number | readonly string[] | undefined;
-  marital_status: string | number | readonly string[] | undefined;
+  gender: string;
+  marital_status: string;
   profile_picture: File | null;
-  phoneno: number | null
+  phoneno: number | null;
 }
 
 const useRegister = () => {
   const { user, isLoading, isAuthenticated, error } = useSelector(
     (state: RootState) => state.auth
   );
-  const dispatch = useDispatch<AppDispatch>();
-  // memoized user registration
-  const handleRgister = useCallback(
+  const dispatch: AppDispatch = useDispatch();
+
+  // Memoized user registration
+  const handleRegister = useCallback(
     async (userData: RegisterInfo) => {
-        await dispatch(registerUser(userData));
-      
+     await dispatch(registerUser(userData));
     },
     [dispatch]
   );
 
-  return { user, isLoading, handleRgister, isAuthenticated, error };
+  return { user, isLoading, handleRegister, isAuthenticated, error };
 };
 
 export default useRegister;

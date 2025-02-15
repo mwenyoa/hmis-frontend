@@ -10,7 +10,7 @@ export interface AuthData {
     email: string;
     password: string;
     password_confirmation: string;
-    phoneno: string;
+    phoneno: number | null;
     age: number;
     gender: string;
   }
@@ -33,5 +33,5 @@ export interface AuthData {
     token: string | null;
     isAuthenticated: boolean;
     isLoading: boolean;
-    error: string | null;
+    error: string | undefined;
   }
