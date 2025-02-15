@@ -13,6 +13,7 @@ export interface AuthData {
     phoneno: number | null;
     age: number;
     gender: string;
+    photo_url: File | null
   }
   
   export interface AuthResponse {

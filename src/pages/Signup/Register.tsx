@@ -15,7 +15,7 @@ interface regUser {
   password_confirmation: string;
   gender: string | null;
   age: number;
-  profile_picture: File | null;
+  photo_url: File | null;
   marital_status: string;
   phoneno: number | null;
 }
@@ -25,7 +25,7 @@ const initialUser: regUser = {
   last_name: "",
   email: "",
   password: "",
-  profile_picture: null,
+  photo_url: null,
   password_confirmation: "",
   marital_status: "",
   gender: "",
@@ -50,7 +50,8 @@ const Register: React.FC<Props> = () => {
       age,
       gender,
       marital_status,
-      profile_picture,
+      photo_url,
+      phoneno
     } = user;
     if (
       first_name &&
@@ -61,9 +62,30 @@ const Register: React.FC<Props> = () => {
       gender &&
       marital_status !== "" &&
       age !== 0 &&
-      profile_picture !== null
+      phoneno !== null &&
+      photo_url !== null
     ) {
-          const response =  handleRegister(user);
+
+         const formData = new FormData();
+      // Append each field to the FormData object
+formData.append('password', password);
+formData.append('password_confirmation', password_confirmation);
+formData.append('email', email);
+formData.append('first_name', first_name);
+formData.append('last_name',last_name);
+formData.append('age', age as any);
+formData.append('phoneno', phoneno as any);
+formData.append('gender', gender);
+formData.append('marital_status', marital_status);
+
+// If `photo_url` is a file (e.g., from an input[type="file"]), append it like this:
+if (user.photo_url instanceof File) {
+  formData.append('photo_url', user.photo_url); // 'photo' is the field name expected by the backend
+} else if (typeof user.photo_url === 'string') {
+  // If `photo_url` is a string (e.g., a URL), append it as a regular field
+  formData.append('photo_url', user.photo_url);
+}
+          const response =  handleRegister(formData as any);
       console.log("respose: ", response)
       console.log("response: ", response, error);
       if (response) {
@@ -323,8 +345,8 @@ const Register: React.FC<Props> = () => {
               <input
                 type="file"
                 accept="image/*"
-                name="profile_picture"
-                id="profile_picture"
+                name="photo_url"
+                id="photo_url"
                 onChange={chnageHandler}
                 required
                 className="block w-full rounded-md bg-white px-3 py-2 text-sm text-gray-900 outline outline-1 outline-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-indigo-600 focus:outline-none"
