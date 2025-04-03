@@ -20,7 +20,8 @@ type Props = {};
 
 
 const App: React.FC<Props> = () => {
-  
+  let token = document.head.querySelector('meta[name="csrf-token"]');
+  console.log("MY TOKEN: ", token);
   useEffect(() => {
     AOS.init({
       duration: 700,

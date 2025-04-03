@@ -77,6 +77,7 @@ formData.append('age', age as any);
 formData.append('phoneno', phoneno as any);
 formData.append('gender', gender);
 formData.append('marital_status', marital_status);
+formData.append('photo_url', photo_url);
 
 // If `photo_url` is a file (e.g., from an input[type="file"]), append it like this:
 if (user.photo_url instanceof File) {

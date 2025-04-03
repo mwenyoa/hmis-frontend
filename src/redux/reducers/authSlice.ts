@@ -130,9 +130,10 @@ const authSlice = createSlice({
         state.token = action.payload.token;
         state.isAuthenticated = true;
       })
-      .addCase(registerUser.rejected, (state, action) => {
+      .addCase(registerUser.rejected, (state, action: any) => {
         state.isLoading = false;
-        state.error = action.error.message;
+        console.log("Payload: ", action.payload);
+        state.error = action.payload
       })
 
       // Logout

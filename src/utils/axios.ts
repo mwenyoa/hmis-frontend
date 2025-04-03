@@ -9,20 +9,22 @@ interface CustomAxiosRequestConfig extends AxiosRequestConfig {
 // Create the Axios instance
 const apiClient = axios.create({
   baseURL: "http://localhost:8000/api",
-  timeout: 5000,
+  // timeout: 5000,
   headers: {
     Accept: "application/json",
+    "Content-Type": "application/json"
   },
   withCredentials: true, // Enable cookies for CSRF (if your backend uses cookies)
   withXSRFToken: true,
 });
 
+apiClient.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
 // Fetch the CSRF token from the backend (if required)
-let csrfToken: string | null = null;
+let csrfToken: string | null;
 
 const fetchCsrfToken = async () => {
   try {
-    const response = await apiClient.get("/sanctum/csrf-cookie"); // Replace with your backend's CSRF endpoint
+    const response = await apiClient.get("sanctum/csrf-cookie"); // Replace with your backend's CSRF endpoint
 
     console.log("CSRF TOKEN REQUEST:  ", response);
     csrfToken = await response?.data?.csrfToken; // Adjust based on your backend's response structure
@@ -34,15 +36,15 @@ const fetchCsrfToken = async () => {
 };
 
 // Fetch the CSRF token when the app loads (or before making the first request)
-fetchCsrfToken();
+const csrftkn = fetchCsrfToken();
 
 // Add token and CSRF token to request headers using axios interceptors
 apiClient.interceptors.request.use(
   (config: CustomAxiosRequestConfig | any) => {
     // Add CSRF token to all requests (if available)
-    if (csrfToken) {
+    if (csrftkn) {
       config.headers = config.headers || {};
-      config.headers["X-CSRF-TOKEN"] = csrfToken; // Adjust the header name based on your backend
+      config.headers["X-CSRF-TOKEN"] = csrftkn; // Adjust the header name based on your backend
     }
 
     // Skip adding the Authorization header if skipAuth is true
@@ -62,5 +64,23 @@ apiClient.interceptors.request.use(
   },
   (error) => Promise.reject(error)
 );
+
+
+apiClient.interceptors.response.use(
+  (response) => {
+    // Check if the response contains a new CSRF token
+    const newCsrfToken = response.headers["x-csrf-token"] || response?.data?.csrfToken;
+    if (newCsrfToken) {
+      csrfToken = newCsrfToken;
+      console.log("Updated CSRF token: ", csrfToken);
+    }
+    return response;
+  },
+  (error) => {
+    // Handle any response errors
+    return Promise.reject(error);
+  }
+);
+
 
 export default apiClient;
