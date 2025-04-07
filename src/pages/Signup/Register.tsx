@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { FiUserPlus } from "react-icons/fi";
-import useRegister from "../../hooks/useRegister";
-import useSweetAlert from "../../hooks/useSweetAlert";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { FiUserPlus } from 'react-icons/fi';
+import useRegister from '../../hooks/useRegister';
+import useSweetAlert from '../../hooks/useSweetAlert';
 
 type Props = {};
 
@@ -15,20 +15,20 @@ interface regUser {
   password_confirmation: string;
   gender: string | null;
   age: number;
-  photo_url: File | null;
+  photo_url: File | Blob | null;
   marital_status: string;
   phoneno: number | null;
 }
 
 const initialUser: regUser = {
-  first_name: "",
-  last_name: "",
-  email: "",
-  password: "",
+  first_name: '',
+  last_name: '',
+  email: '',
+  password: '',
   photo_url: null,
-  password_confirmation: "",
-  marital_status: "",
-  gender: "",
+  password_confirmation: '',
+  marital_status: '',
+  gender: '',
   age: 0,
   phoneno: null,
 };
@@ -38,9 +38,9 @@ const Register: React.FC<Props> = () => {
   const { handleRegister, error, isLoading, isAuthenticated } = useRegister();
   const { ShowAlert } = useSweetAlert({});
   // Handle form submission
-  const registerHandler = (e: React.FormEvent) => {
+  const registerHandler = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Add form submission logic here
+
     const {
       password,
       password_confirmation,
@@ -51,8 +51,10 @@ const Register: React.FC<Props> = () => {
       gender,
       marital_status,
       photo_url,
-      phoneno
+      phoneno,
     } = user;
+
+    console.table(user);
     if (
       first_name &&
       last_name &&
@@ -60,57 +62,59 @@ const Register: React.FC<Props> = () => {
       password &&
       password_confirmation &&
       gender &&
-      marital_status !== "" &&
+      marital_status !== '' &&
       age !== 0 &&
       phoneno !== null &&
       photo_url !== null
     ) {
+      try {
+        const formData = new FormData();
+        formData.append('first_name', first_name);
+        formData.append('last_name', last_name);
+        formData.append('email', email);
+        formData.append('password', password);
+        formData.append('password_confirmation', password_confirmation);
+        formData.append('gender', gender);
+        formData.append('marital_status', marital_status);
+        formData.append('age', age.toString());
+        formData.append('phoneno', phoneno.toString());
+        formData.append('photo_url', photo_url);
 
-         const formData = new FormData();
-      // Append each field to the FormData object
-formData.append('password', password);
-formData.append('password_confirmation', password_confirmation);
-formData.append('email', email);
-formData.append('first_name', first_name);
-formData.append('last_name',last_name);
-formData.append('age', age as any);
-formData.append('phoneno', phoneno as any);
-formData.append('gender', gender);
-formData.append('marital_status', marital_status);
-formData.append('photo_url', photo_url);
+       const response = await handleRegister(formData);
+       console.log("log: ", response);
+          if(response !== null){
+            ShowAlert({
+              title: 'Success',
+              text: 'User Registration Successful',
+              icon: 'success',
+              time: 2000,
+            });
+          }
+      
 
-// If `photo_url` is a file (e.g., from an input[type="file"]), append it like this:
-if (user.photo_url instanceof File) {
-  formData.append('photo_url', user.photo_url); // 'photo' is the field name expected by the backend
-} else if (typeof user.photo_url === 'string') {
-  // If `photo_url` is a string (e.g., a URL), append it as a regular field
-  formData.append('photo_url', user.photo_url);
-}
-          const response =  handleRegister(formData as any);
-      console.log("respose: ", response)
-      console.log("response: ", response, error);
-      if (response) {
-        console.log("Response: ", response);
+        // Optionally reset form or redirect
+        setUser(initialUser);
+      } catch (error: any) {
         ShowAlert({
-          title: "Success",
-          text: "User Registration Successful",
-          icon: "success",
+          title: 'Failed',
+          text: error || 'User Registration Failed',
+          icon: 'error',
           time: 2000,
         });
-      }else {
-        ShowAlert({
-          title: "Failed",
-          text: "User Registration Failed",
-          icon: "fail",
-          time: 2000,
-        });
-      };
-    } 
+      }
+    } else {
+      ShowAlert({
+        title: 'Missing Fields',
+        text: 'Please fill in all required fields',
+        icon: 'warning',
+        time: 2000,
+      });
+    }
   };
 
   const chnageHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { files, name, value } = e.target;
-    if (e.target.type === "file") {
+    if (e.target.type === 'file') {
       if (files && files?.length > 0) {
         setUser({ ...user, [name]: files?.[0] });
       }
@@ -337,7 +341,7 @@ if (user.photo_url instanceof File) {
           {/* Photo URL */}
           <div className="col-span-1">
             <label
-              htmlFor="profile_picture"
+              htmlFor="photo_url"
               className="block text-sm font-medium text-gray-900"
             >
               Profile Picture

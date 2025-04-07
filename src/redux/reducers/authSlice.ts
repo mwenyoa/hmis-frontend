@@ -25,22 +25,28 @@ export const registerUser = createAsyncThunk<AuthResponse, RegisterInfo>(
   async (user, { rejectWithValue }) => {
     try {
       const response = await apiClient.post<AuthResponse>("/register", user, {
-        skipAuth: true, // Use the custom property
+        skipAuth: true, // Custom property to skip auth (if needed)
       } as CustomAxiosRequestConfig);
+
       const { token, user: userData } = response.data;
 
-      // Set the Authorization header (optional, consider moving this to an interceptor)
-      apiClient.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      // Set the Authorization header (optional, better in an interceptor)
+      if (token) {
+        apiClient.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      }
 
       return { user: userData, token };
     } catch (err) {
       const error = err as ErrorResponse;
 
       // Log the error for debugging
-      console.error("Registration Error: ", error);
+      console.error("Registration Error:", error.response?.data || error.message);
 
-      // Use rejectWithValue to pass the error message to the reducer
-      return rejectWithValue(error.response?.data?.message || "Registration failed");
+      // Return a structured error message to the reducer
+      return rejectWithValue({
+        message: error.response?.data?.message || "Registration failed",
+        status: error.response?.status,
+      });
     }
   }
 );

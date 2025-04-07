@@ -11,8 +11,7 @@ const apiClient = axios.create({
   baseURL: "http://localhost:8000/api",
   // timeout: 5000,
   headers: {
-    Accept: "application/json",
-    "Content-Type": "application/json"
+    "Accept": "application/json"
   },
   withCredentials: true, // Enable cookies for CSRF (if your backend uses cookies)
   withXSRFToken: true,
@@ -24,7 +23,7 @@ let csrfToken: string | null;
 
 const fetchCsrfToken = async () => {
   try {
-    const response = await apiClient.get("sanctum/csrf-cookie"); // Replace with your backend's CSRF endpoint
+    const response = await apiClient.get("/sanctum/csrf-cookie"); // Replace with your backend's CSRF endpoint
 
     console.log("CSRF TOKEN REQUEST:  ", response);
     csrfToken = await response?.data?.csrfToken; // Adjust based on your backend's response structure
