@@ -6,9 +6,10 @@ interface ImportMetaEnv {
   readonly VITE_APP_PORT: string;
   readonly VITE_APP_HOST: string;
   readonly VITE_APP_PROTOCOL: string;
-  readonly VITE_APP_URL: string;
+  readonly VITE_API_URL: string;
   readonly VITE_APP_SECRET: string;
   readonly VITE_APP_DB_HOST: string;
+  readonly VITE_HMIS_PORT: string;
 }
 
 interface ImportMeta {

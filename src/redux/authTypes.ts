@@ -1,0 +1,38 @@
+// authTypes.ts
+export interface AuthData {
+    email: string;
+    password: string;
+  }
+  
+  export interface RegisterInfo {
+    first_name: string;
+    last_name: string;
+    email: string;
+    password: string;
+    password_confirmation: string;
+    phoneno: number | null;
+    age: number;
+    gender: string;
+    photo_url: File | null
+  }
+  
+  export interface AuthResponse {
+    user: any;
+    token: string;
+  }
+  
+  export interface ErrorResponse {
+    response?: {
+      data?: {
+        message?: string;
+      };
+    };
+  }
+  
+  export interface AuthState {
+    user: any;
+    token: string | null;
+    isAuthenticated: boolean;
+    isLoading: boolean;
+    error: string | undefined;
+  }

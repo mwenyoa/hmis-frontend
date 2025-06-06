@@ -1,14 +1,128 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { FiUserPlus } from "react-icons/fi";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { FiUserPlus } from 'react-icons/fi';
+import useRegister from '../../hooks/useRegister';
+import useSweetAlert from '../../hooks/useSweetAlert';
 
 type Props = {};
 
+// Register Interface
+interface regUser {
+  first_name: string;
+  last_name: string;
+  email: string;
+  password: string;
+  password_confirmation: string;
+  gender: string | null;
+  age: number;
+  photo_url: File | Blob | null;
+  marital_status: string;
+  phoneno: number | null;
+}
+
+const initialUser: regUser = {
+  first_name: '',
+  last_name: '',
+  email: '',
+  password: '',
+  photo_url: null,
+  password_confirmation: '',
+  marital_status: '',
+  gender: '',
+  age: 0,
+  phoneno: null,
+};
+
 const Register: React.FC<Props> = () => {
+  const [user, setUser] = useState<regUser>(initialUser);
+  const { handleRegister, error, isLoading, isAuthenticated } = useRegister();
+  const { ShowAlert } = useSweetAlert({});
   // Handle form submission
-  const registerHandler = (e: React.FormEvent) => {
+  const registerHandler = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Add form submission logic here
+
+    const {
+      password,
+      password_confirmation,
+      email,
+      first_name,
+      last_name,
+      age,
+      gender,
+      marital_status,
+      photo_url,
+      phoneno,
+    } = user;
+
+    console.table(user);
+    if (
+      first_name &&
+      last_name &&
+      email &&
+      password &&
+      password_confirmation &&
+      gender &&
+      marital_status !== '' &&
+      age !== 0 &&
+      phoneno !== null &&
+      photo_url !== null
+    ) {
+      const formData = new FormData();
+      formData.append('first_name', first_name);
+      formData.append('last_name', last_name);
+      formData.append('email', email);
+      formData.append('password', password);
+      formData.append('password_confirmation', password_confirmation);
+      formData.append('gender', gender);
+      formData.append('marital_status', marital_status);
+      formData.append('age', age.toString());
+      formData.append('phoneno', phoneno.toString());
+      formData.append('photo_url', photo_url);
+
+     const response = await handleRegister(formData);
+     console.log("log data: ", response);
+        if(response !== null){
+          setUser(initialUser);
+          ShowAlert({
+            title: 'Success',
+            text: 'User Registration Successful',
+            icon: 'success',
+            time: 2000,
+          });
+        }
+       if(error !== undefined) {
+        console.log("Error obj: ", error)
+        ShowAlert({
+          title: 'Failed',
+          text: error || 'User Registration Failed',
+          icon: 'error',
+          time: 2000,
+        });
+       }
+    } else {
+      ShowAlert({
+        title: 'Missing Fields',
+        text: 'Please fill in all required fields',
+        icon: 'warning',
+        time: 2000,
+      });
+    }
+  };
+
+  const chnageHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { files, name, value } = e.target;
+    if (e.target.type === 'file') {
+      if (files && files?.length > 0) {
+        setUser({ ...user, [name]: files?.[0] });
+      }
+    } else {
+      setUser({ ...user, [name]: value });
+    }
+  };
+
+  const selectChangeHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { value, name } = e.target;
+    setUser({ ...user, [name]: value });
   };
 
   return (
@@ -39,6 +153,7 @@ const Register: React.FC<Props> = () => {
                 type="text"
                 name="first_name"
                 id="first_name"
+                onChange={chnageHandler}
                 required
                 className="block w-full rounded-md bg-white px-3 py-2 text-sm text-gray-900 outline outline-1 outline-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-indigo-600 focus:outline-none"
               />
@@ -58,6 +173,7 @@ const Register: React.FC<Props> = () => {
                 type="text"
                 name="last_name"
                 id="last_name"
+                onChange={chnageHandler}
                 required
                 className="block w-full rounded-md bg-white px-3 py-2 text-sm text-gray-900 outline outline-1 outline-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-indigo-600 focus:outline-none"
               />
@@ -77,6 +193,7 @@ const Register: React.FC<Props> = () => {
                 type="email"
                 name="email"
                 id="email"
+                onChange={chnageHandler}
                 required
                 className="block w-full rounded-md bg-white px-3 py-2 text-sm text-gray-900 outline outline-1 outline-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-indigo-600 focus:outline-none"
               />
@@ -96,6 +213,29 @@ const Register: React.FC<Props> = () => {
                 type="password"
                 name="password"
                 id="password"
+                autoComplete="off"
+                onChange={chnageHandler}
+                required
+                className="block w-full rounded-md bg-white px-3 py-2 text-sm text-gray-900 outline outline-1 outline-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-indigo-600 focus:outline-none"
+              />
+            </div>
+          </div>
+
+          {/* Password confirmation*/}
+          <div className="col-span-1">
+            <label
+              htmlFor="password_confirmation"
+              className="block text-sm font-medium text-gray-900"
+            >
+              Confirm Password
+            </label>
+            <div className="mt-2">
+              <input
+                type="password"
+                name="password_confirmation"
+                id="password_confirmation"
+                autoComplete="off"
+                onChange={chnageHandler}
                 required
                 className="block w-full rounded-md bg-white px-3 py-2 text-sm text-gray-900 outline outline-1 outline-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-indigo-600 focus:outline-none"
               />
@@ -116,6 +256,7 @@ const Register: React.FC<Props> = () => {
                 name="phoneno"
                 id="phoneno"
                 pattern="[0-9]{10}"
+                onChange={chnageHandler}
                 required
                 className="block w-full rounded-md bg-white px-3 py-2 text-sm text-gray-900 outline outline-1 outline-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-indigo-600 focus:outline-none"
               />
@@ -134,13 +275,14 @@ const Register: React.FC<Props> = () => {
               <select
                 name="gender"
                 id="gender"
+                onChange={selectChangeHandler}
+                value={user?.gender}
                 required
                 className="block w-full rounded-md bg-white px-3 py-2 text-sm text-gray-900 outline outline-1 outline-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-indigo-600 focus:outline-none"
               >
                 <option value="">Select</option>
                 <option value="male">Male</option>
                 <option value="female">Female</option>
-                <option value="other">Other</option>
               </select>
             </div>
           </div>
@@ -159,6 +301,8 @@ const Register: React.FC<Props> = () => {
                 name="age"
                 id="age"
                 min="1"
+                onChange={selectChangeHandler}
+                value={user?.age}
                 required
                 className="block w-full rounded-md bg-white px-3 py-2 text-sm text-gray-900 outline outline-1 outline-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-indigo-600 focus:outline-none"
               />
@@ -177,6 +321,8 @@ const Register: React.FC<Props> = () => {
               <select
                 name="marital_status"
                 id="marital_status"
+                onChange={selectChangeHandler}
+                value={user?.marital_status}
                 required
                 className="block w-full rounded-md bg-white px-3 py-2 text-sm text-gray-900 outline outline-1 outline-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-indigo-600 focus:outline-none"
               >
@@ -203,6 +349,7 @@ const Register: React.FC<Props> = () => {
                 accept="image/*"
                 name="photo_url"
                 id="photo_url"
+                onChange={chnageHandler}
                 required
                 className="block w-full rounded-md bg-white px-3 py-2 text-sm text-gray-900 outline outline-1 outline-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-indigo-600 focus:outline-none"
               />
@@ -210,7 +357,7 @@ const Register: React.FC<Props> = () => {
           </div>
 
           {/* Submit Button */}
-          <div className="col-span-full text-center">
+          <div className="col-span-1 sm:col-span-full text-center">
             <button
               type="submit"
               className="flex w-full justify-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2"
@@ -232,6 +379,6 @@ const Register: React.FC<Props> = () => {
       </div>
     </section>
   );
-}
+};
 
 export default Register;
