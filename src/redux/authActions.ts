@@ -33,6 +33,7 @@ export const registerUser = createAsyncThunk<AuthResponse, RegisterInfo>(
       return { user: userData, token };
     } catch (err) {
       const error = err as ErrorResponse;
+      console.log("Error Data: ", error);
         throw new Error(  error.response?.data?.message || "Registration failed");
     }
   }

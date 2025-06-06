@@ -27,7 +27,7 @@ export const registerUser = createAsyncThunk<AuthResponse, RegisterInfo>(
       const response = await apiClient.post<AuthResponse>("/register", user, {
         skipAuth: true, // Custom property to skip auth (if needed)
       } as CustomAxiosRequestConfig);
-
+      console.table(response);
       const { token, user: userData } = response.data;
 
       // Set the Authorization header (optional, better in an interceptor)
@@ -38,14 +38,10 @@ export const registerUser = createAsyncThunk<AuthResponse, RegisterInfo>(
       return { user: userData, token };
     } catch (err) {
       const error = err as ErrorResponse;
-
-      // Log the error for debugging
-      console.error("Registration Error:", error.response?.data || error.message);
-
       // Return a structured error message to the reducer
       return rejectWithValue({
         message: error.response?.data?.message || "Registration failed",
-        status: error.response?.status,
+        status: error?.response?.status,
       });
     }
   }
@@ -122,7 +118,7 @@ const authSlice = createSlice({
       })
       .addCase(logIn.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload as string;
+        state.error = action.payload.message;
       })
 
       // Register
@@ -138,8 +134,7 @@ const authSlice = createSlice({
       })
       .addCase(registerUser.rejected, (state, action: any) => {
         state.isLoading = false;
-        console.log("Payload: ", action.payload);
-        state.error = action.payload
+        state.error = action.payload.message
       })
 
       // Logout
@@ -154,9 +149,10 @@ const authSlice = createSlice({
         state.user = action.payload;
         state.isAuthenticated = true;
       })
-      .addCase(fetchUser.rejected, (state) => {
+      .addCase(fetchUser.rejected, (state, action:any) => {
         state.user = null;
         state.isAuthenticated = false;
+        state.error = action.payload.message
       });
   },
 });

@@ -67,41 +67,38 @@ const Register: React.FC<Props> = () => {
       phoneno !== null &&
       photo_url !== null
     ) {
-      try {
-        const formData = new FormData();
-        formData.append('first_name', first_name);
-        formData.append('last_name', last_name);
-        formData.append('email', email);
-        formData.append('password', password);
-        formData.append('password_confirmation', password_confirmation);
-        formData.append('gender', gender);
-        formData.append('marital_status', marital_status);
-        formData.append('age', age.toString());
-        formData.append('phoneno', phoneno.toString());
-        formData.append('photo_url', photo_url);
+      const formData = new FormData();
+      formData.append('first_name', first_name);
+      formData.append('last_name', last_name);
+      formData.append('email', email);
+      formData.append('password', password);
+      formData.append('password_confirmation', password_confirmation);
+      formData.append('gender', gender);
+      formData.append('marital_status', marital_status);
+      formData.append('age', age.toString());
+      formData.append('phoneno', phoneno.toString());
+      formData.append('photo_url', photo_url);
 
-       const response = await handleRegister(formData);
-       console.log("log: ", response);
-          if(response !== null){
-            ShowAlert({
-              title: 'Success',
-              text: 'User Registration Successful',
-              icon: 'success',
-              time: 2000,
-            });
-          }
-      
-
-        // Optionally reset form or redirect
-        setUser(initialUser);
-      } catch (error: any) {
+     const response = await handleRegister(formData);
+     console.log("log data: ", response);
+        if(response !== null){
+          setUser(initialUser);
+          ShowAlert({
+            title: 'Success',
+            text: 'User Registration Successful',
+            icon: 'success',
+            time: 2000,
+          });
+        }
+       if(error !== undefined) {
+        console.log("Error obj: ", error)
         ShowAlert({
           title: 'Failed',
           text: error || 'User Registration Failed',
           icon: 'error',
           time: 2000,
         });
-      }
+       }
     } else {
       ShowAlert({
         title: 'Missing Fields',
